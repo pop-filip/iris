@@ -1,6 +1,7 @@
-# Ferdis Persönlicher Assistent
+# Iris — AI Assistant by Digital Nature
 
-> Pilot projekt za **DN AI Assistant** — personalni AI asistent koji organizira termine, traži letove, rezervira hotele i automatizira svakodnevne zadatke.
+> Personalni AI asistent koji organizira termine, traži letove, rezervira hotele i automatizira svakodnevne zadatke.
+> **Pilot klijent:** Ferdi
 
 Razvijeno od [Digital Nature](https://digitalnature.at) · 2026
 
