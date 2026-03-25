@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ferdis Persönlicher Assistent — Digital Nature</title>
+
+  <!-- Open Graph / Social Share -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://digitalnature.at/ferdis-assistent/">
+  <meta property="og:title" content="Ferdis Persönlicher Assistent">
+  <meta property="og:description" content="KI-Assistent der Termine organisiert, Flüge bucht und den Alltag automatisiert — entwickelt von Digital Nature.">
+  <meta property="og:image" content="https://digitalnature.at/images/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="de_AT">
+  <meta property="og:site_name" content="Digital Nature">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ferdis Persönlicher Assistent">
+  <meta name="twitter:description" content="KI-Assistent der Termine organisiert, Flüge bucht und den Alltag automatisiert — entwickelt von Digital Nature.">
+  <meta name="twitter:image" content="https://digitalnature.at/images/og-image.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="https://digitalnature.at/images/favicon.svg">
+  <link rel="apple-touch-icon" href="https://digitalnature.at/images/apple-touch-icon.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #e8e8e8;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      padding: 60px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* Terminal Window */
+    .terminal {
+      border: 1px solid #222;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .terminal:nth-child(1) { animation-delay: 0.1s; }
+    .terminal:nth-child(2) { animation-delay: 0.3s; }
+    .terminal:nth-child(3) { animation-delay: 0.5s; }
+    .terminal:nth-child(4) { animation-delay: 0.7s; }
+    .terminal:nth-child(5) { animation-delay: 0.9s; }
+    .terminal:nth-child(6) { animation-delay: 1.1s; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .terminal-bar {
+      background: #161616;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green  { background: #28c840; }
+
+    .terminal-title {
+      margin-left: 8px;
+      font-size: 13px;
+      color: #666;
+      letter-spacing: 0.5px;
+    }
+
+    .terminal-body {
+      background: #111;
+      padding: 36px 40px 48px;
+    }
+
+    /* Hero */
+    .hero-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #555;
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-size: 26px;
+      font-weight: bold;
+      color: #f0f0f0;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .hero-title span {
+      color: #c9a96e;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: #c9a96e;
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: blink 0.8s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.8;
+      margin-top: 18px;
+      max-width: 560px;
+    }
+
+    /* Section Header */
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: #c9a96e;
+      font-weight: bold;
+      margin-bottom: 24px;
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid #1e1e1e;
+      margin: 28px 0;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      font-size: 11px;
+      color: #c9a96e;
+      font-weight: bold;
+      min-width: 28px;
+      padding-top: 2px;
+      letter-spacing: 1px;
+    }
+
+    .step-content {}
+
+    .step-title {
+      font-size: 15px;
+      font-weight: bold;
+      color: #f0f0f0;
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: #aaa;
+      line-height: 1.8;
+    }
+
+    /* Summary / Info Box */
+    .summary-box {
+      background: #161616;
+      border: 1px solid #222;
+      border-left: 3px solid #c9a96e;
+      padding: 20px 24px;
+      border-radius: 4px;
+      margin-top: 4px;
+    }
+
+    .summary-box p {
+      font-size: 13px;
+      color: #b0b0b0;
+      line-height: 1.9;
+    }
+
+    .summary-box strong {
+      color: #e8e8e8;
+    }
+
+    /* Feature Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 560px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    .feature-card {
+      background: #161616;
+      border: 1px solid #1e1e1e;
+      border-radius: 6px;
+      padding: 18px 20px;
+    }
+
+    .feature-card:hover {
+      border-color: #2a2a2a;
+      transition: border-color 0.2s ease;
+    }
+
+    .feature-icon {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .feature-name {
+      font-size: 13px;
+      font-weight: bold;
+      color: #e8e8e8;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      color: #999;
+      line-height: 1.7;
+    }
+
+    /* Stack Table */
+    .stack-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 13px;
+    }
+
+    .stack-row:last-child {
+      border-bottom: none;
+    }
+
+    .stack-label {
+      color: #888;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      min-width: 130px;
+    }
+
+    .stack-value {
+      color: #bbb;
+    }
+
+    .stack-tag {
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      color: #888;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Timeline / Chat Demo */
+    .chat-demo {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .msg {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-width: 85%;
+    }
+
+    .msg.user { align-self: flex-end; align-items: flex-end; }
+    .msg.agent { align-self: flex-start; align-items: flex-start; }
+
+    .msg-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #666;
+    }
+
+    .msg.user .msg-label { color: #c9a96e; opacity: 0.7; }
+
+    .msg-bubble {
+      background: #161616;
+      border: 1px solid #1e1e1e;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #ccc;
+      line-height: 1.7;
+    }
+
+    .msg.user .msg-bubble {
+      background: #1a1610;
+      border-color: #2e2416;
+      color: #d4b483;
+    }
+
+    .msg-bubble em {
+      color: #c9a96e;
+      font-style: normal;
+      font-weight: bold;
+    }
+
+    /* Status Badge */
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 3px 9px;
+      border-radius: 3px;
+      font-weight: bold;
+    }
+
+    .badge-green  { background: #0d2010; border: 1px solid #1a4020; color: #3a9e55; }
+    .badge-yellow { background: #201a08; border: 1px solid #3a2e10; color: #a88a30; }
+    .badge-gray   { background: #141414; border: 1px solid #222; color: #666; }
+
+    /* Footer */
+    .footer-note {
+      font-size: 12px;
+      color: #333;
+      text-align: center;
+      margin-top: 48px;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-note span {
+      color: #444;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .terminal-body { padding: 28px 24px 36px; }
+      body { padding: 40px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HERO TERMINAL -->
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span class="terminal-title">ferdis-assistent — v1.0.0</span>
+      </div>
+      <div class="terminal-body">
+        <div class="hero-label">Persönlicher KI-Assistent</div>
+        <div class="hero-title">
+          Ferdis <span>Persönlicher</span><br>
+          Assistent<span class="cursor"></span>
+        </div>
+        <div class="hero-sub">
+          Ein intelligenter Assistent, der Termine organisiert, Flüge bucht,
+          Reservierungen erledigt und den Alltag automatisiert —
+          damit Ferdi sich auf das Wesentliche konzentrieren kann.
+        </div>
+      </div>
+    </div>
+
+    <!-- WAS ER KANN -->
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span class="terminal-title">funktionen.md</span>
+      </div>
+      <div class="terminal-body">
+        <div class="section-title">Was der Assistent erledigt</div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">✈️</div>
+            <div class="feature-name">Flüge buchen</div>
+            <div class="feature-desc">Findet die besten Verbindungen, vergleicht Preise und bereitet die Buchung vor.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📅</div>
+            <div class="feature-name">Termine verwalten</div>
+            <div class="feature-desc">Erstellt, verschiebt und erinnert an Termine im Kalender automatisch.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🏨</div>
+            <div class="feature-name">Hotels &amp; Restaurants</div>
+            <div class="feature-desc">Reserviert Unterkünfte und Tische — auf Wunsch mit Präferenzprofil.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📧</div>
+            <div class="feature-name">E-Mails verfassen</div>
+            <div class="feature-desc">Schreibt professionelle Anfragen, Bestätigungen und Follow-ups.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔔</div>
+            <div class="feature-name">Erinnerungen</div>
+            <div class="feature-desc">Push-Benachrichtigungen, SMS oder Telegram — je nach Vorliebe.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🗺️</div>
+            <div class="feature-name">Reiseplanung</div>
+            <div class="feature-desc">Erstellt komplette Reisepläne inkl. Transfer, Check-in und Aktivitäten.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEMO KONVERSATION -->
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span class="terminal-title">demo — live chat</span>
+      </div>
+      <div class="terminal-body">
+        <div class="section-title">Beispiel — Wie es funktioniert</div>
+
+        <div class="chat-demo">
+          <div class="msg user">
+            <div class="msg-label">Ferdi</div>
+            <div class="msg-bubble">
+              Ich brauche einen Flug Wien → Split, Hinflug 15. April, Rückflug 20. April.
+              Möglichst günstig, Abflug Abend bevorzugt.
+            </div>
+          </div>
+
+          <div class="msg agent">
+            <div class="msg-label">Assistent</div>
+            <div class="msg-bubble">
+              Verstanden. Ich suche gerade nach verfügbaren Verbindungen...<br><br>
+              <em>Top 3 Optionen gefunden:</em><br>
+              — Austrian AUA 481 · 18:40 ab VIE · €89 hin/rück<br>
+              — Ryanair FR 4521 · 19:15 ab VIE · €64 hin/rück<br>
+              — Eurowings EW 201 · 20:05 ab VIE · €78 hin/rück<br><br>
+              Soll ich die <em>Ryanair-Option</em> für dich vorbereiten?
+            </div>
+          </div>
+
+          <div class="msg user">
+            <div class="msg-label">Ferdi</div>
+            <div class="msg-bubble">
+              Ja, Ryanair passt. Mach weiter.
+            </div>
+          </div>
+
+          <div class="msg agent">
+            <div class="msg-label">Assistent</div>
+            <div class="msg-bubble">
+              Buchungsseite geöffnet, Daten vorausgefüllt.<br>
+              Bitte <em>Zahlung bestätigen</em> — ich warte auf dein OK bevor etwas abgebucht wird.<br><br>
+              Soll ich gleichzeitig ein Hotel in Split für diese Nächte suchen?
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIE ES FUNKTIONIERT -->
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span class="terminal-title">architektur.md</span>
+      </div>
+      <div class="terminal-body">
+        <div class="section-title">Wie es funktioniert — Schritt für Schritt</div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">01.</div>
+            <div class="step-content">
+              <div class="step-title">Anfrage via Chat oder Sprache</div>
+              <div class="step-desc">
+                Ferdi schickt eine Nachricht — per Telegram, WhatsApp oder Web-Interface.
+                Natürliche Sprache, kein spezielles Format notwendig.
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">02.</div>
+            <div class="step-content">
+              <div class="step-title">KI versteht die Absicht</div>
+              <div class="step-desc">
+                Claude analysiert den Auftrag, erkennt Schlüsseldetails (Datum, Ort, Präferenz)
+                und plant die nächsten Schritte automatisch.
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">03.</div>
+            <div class="step-content">
+              <div class="step-title">Ausführung mit Bestätigung</div>
+              <div class="step-desc">
+                Der Assistent führt Aktionen aus — sucht, vergleicht, öffnet Buchungsmasken.
+                Vor jeder Zahlung wird Ferdis Bestätigung eingeholt.
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">04.</div>
+            <div class="step-content">
+              <div class="step-title">Bestätigung &amp; Kalender-Sync</div>
+              <div class="step-desc">
+                Nach erfolgter Buchung werden alle Details automatisch im Kalender eingetragen,
+                Erinnerungen gesetzt und eine Zusammenfassung gesendet.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="summary-box">
+          <p>
+            <strong>Wichtiges Sicherheitsprinzip:</strong> Der Assistent handelt niemals
+            eigenständig bei Zahlungen. Jede Transaktion erfordert Ferdis ausdrückliche
+            Bestätigung — er bleibt immer in der Kontrolle.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TECH STACK -->
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span class="terminal-title">tech-stack.md</span>
+      </div>
+      <div class="terminal-body">
+        <div class="section-title">Technologie &amp; Infrastruktur</div>
+
+        <div class="stack-row">
+          <span class="stack-label">KI-Modell</span>
+          <span class="stack-value">Claude (Anthropic) — Tool Use / Agents</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-label">Schnittstelle</span>
+          <span class="stack-value">Telegram Bot · WhatsApp · Web</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-label">Kalender</span>
+          <span class="stack-value">Google Calendar API</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-label">Web Automation</span>
+          <span class="stack-value">Playwright / Puppeteer</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-label">Flugsuche</span>
+          <span class="stack-value">Skyscanner API · Google Flights</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-label">Hotels</span>
+          <span class="stack-value">Booking.com API</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-label">Hosting</span>
+          <span class="stack-value">Hetzner VPS · Docker</span>
+        </div>
+        <div class="stack-row">
+          <span class="stack-label">Backend</span>
+          <span class="stack-value">Node.js · Python</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASEN / ROADMAP -->
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot dot-red"></div>
+        <div class="dot dot-yellow"></div>
+        <div class="dot dot-green"></div>
+        <span class="terminal-title">roadmap.md</span>
+      </div>
+      <div class="terminal-body">
+        <div class="section-title">Entwicklungsphasen</div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">
+              <span class="badge badge-green">Phase 1</span>
+            </div>
+            <div class="step-content">
+              <div class="step-title">Kalender &amp; Erinnerungen</div>
+              <div class="step-desc">
+                Termine erfassen, verschieben, Erinnerungen senden.
+                Telegram-Bot als erster Interface-Kanal. Google Calendar Sync.
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">
+              <span class="badge badge-yellow">Phase 2</span>
+            </div>
+            <div class="step-content">
+              <div class="step-title">Flüge &amp; Hotels recherchieren</div>
+              <div class="step-desc">
+                Automatische Suche mit Top-3-Empfehlung. Buchung vorbereiten,
+                Ferdi bestätigt. E-Mail Drafts für Reservierungen.
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-num">
+              <span class="badge badge-gray">Phase 3</span>
+            </div>
+            <div class="step-content">
+              <div class="step-title">Vollautomatik mit Profil</div>
+              <div class="step-desc">
+                Persönliches Präferenzprofil (Sitzplatz, Airline, Hotel-Sterne).
+                Wiederkehrende Aufgaben. Reisepläne auf Knopfdruck.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="summary-box">
+          <p>
+            <strong>Aktueller Status:</strong> Konzept &amp; Planung abgeschlossen.
+            Phase 1 kann innerhalb von <strong>2–3 Wochen</strong> entwickelt und
+            produktiv eingesetzt werden. Keine monatlichen Abokosten für externe Tools
+            in Phase 1 notwendig.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Ferdis Persönlicher Assistent</span> · Konzept by Digital Nature · 2026
+    </div>
+
+  </div>
+</body>
+</html>
