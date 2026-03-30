@@ -1,7 +1,6 @@
 # Iris — AI Assistant by Digital Nature
 
-> Personalni AI asistent koji organizira termine, traži letove, rezervira hotele i automatizira svakodnevne zadatke.
-> **Pilot klijent:** Ferdi
+> B2B AI asistent koji organizira termine, traži letove, rezervira hotele i automatizira svakodnevne zadatke.
 
 Razvijeno od [Digital Nature](https://digitalnature.at) · 2026
 
@@ -9,11 +8,11 @@ Razvijeno od [Digital Nature](https://digitalnature.at) · 2026
 
 ## O projektu
 
-**Ferdi** je pilot klijent. Ovaj projekat je osnova za skalabilan B2B produkt koji Digital Nature nudi putem [digitalnature.at](https://digitalnature.at).
+**Iris** je skalabilan B2B AI asistent produkt koji Digital Nature nudi klijentima putem [digitalnature.at/iris](https://digitalnature.at/iris/).
 
 Svaki klijent dobija:
 - Embeddable web chat widget (jedan `<script>` tag na njihov website)
-- WhatsApp notifikacije via Twilio
+- Telegram / WhatsApp interface
 - Konfigurabilne module (calendar, flights, hotels, email...)
 - Personalizirano ime i branding asistenta
 
@@ -44,7 +43,7 @@ Klijent website
 |---|---|
 | AI model | Claude (Anthropic) — Tool Use / Agents |
 | Backend | Node.js · Express |
-| Chat interface | Web Widget (embeddable) · Telegram (opcija) |
+| Chat interface | Web Widget (embeddable) · Telegram · WhatsApp |
 | Notifikacije | WhatsApp via Twilio |
 | Letovi | Amadeus API |
 | Hoteli | Booking.com API |
@@ -57,14 +56,14 @@ Klijent website
 
 ## Roadmap
 
-### Phase 1 — Kalender & Erinnerungen ✅ (in progress)
-- [ ] Telegram Bot (Ferdi pilot)
+### Phase 1 — Core Bot (in progress)
+- [ ] Telegram Bot
 - [ ] Node.js backend + Claude Tool Use
 - [ ] Google Calendar API
 - [ ] Conversation memory (SQLite)
 - [ ] Telegram Inline Keyboards
 
-### Phase 2 — Flüge & Hotels
+### Phase 2 — Letovi & Hoteli
 - [ ] Amadeus API (flight search)
 - [ ] Booking.com API (hotels)
 - [ ] Playwright automation
@@ -75,15 +74,14 @@ Klijent website
 - [ ] Twilio WhatsApp notifikacije
 - [ ] Multi-tenant client config
 - [ ] Admin dashboard (Digital Nature)
-- [ ] Vollautomatik + preferencijski profil
 
 ---
 
 ## Issues
 
-Sve zadatke pratimo na [GitHub Issues](https://github.com/pop-filip/ferdis-asistent/issues).
+Sve zadatke pratimo na [GitHub Issues](https://github.com/pop-filip/iris/issues).
 
 Milestones:
-- [Phase 1](https://github.com/pop-filip/ferdis-asistent/milestone/1)
-- [Phase 2](https://github.com/pop-filip/ferdis-asistent/milestone/2)
-- [Phase 3](https://github.com/pop-filip/ferdis-asistent/milestone/3)
+- [Phase 1](https://github.com/pop-filip/iris/milestone/1)
+- [Phase 2](https://github.com/pop-filip/iris/milestone/2)
+- [Phase 3](https://github.com/pop-filip/iris/milestone/3)
