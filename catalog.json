@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Bremsbeläge VW Golf VII (vorne)",
+    "price": 34.99,
+    "description": "Original-Qualität, passt für Golf VII 2012–2020, alle Motoren",
+    "available": true,
+    "category": "Bremsen"
+  },
+  {
+    "name": "Bremsscheiben Set VW Golf VII",
+    "price": 69.90,
+    "description": "Vorne + hinten, gelochte Ausführung, verstärkte Wärmeableitung",
+    "available": true,
+    "category": "Bremsen"
+  },
+  {
+    "name": "Ölfilter Universal (Bosch)",
+    "price": 8.50,
+    "description": "Kompatibel mit BMW, Mercedes, Audi, VW. Auch als 10er Pack verfügbar (€69)",
+    "available": true,
+    "category": "Motorpflege"
+  },
+  {
+    "name": "Motoröl 5W-30 5L (Castrol)",
+    "price": 32.90,
+    "description": "Vollsynthetisch, für Benzin- und Dieselmotoren, ACEA C3",
+    "available": true,
+    "category": "Motorpflege"
+  },
+  {
+    "name": "Luftfilter BMW 3er (E90/E91/E92)",
+    "price": 24.99,
+    "description": "Passend für 2005–2013, alle Motorvarianten",
+    "available": false,
+    "category": "Motorpflege"
+  },
+  {
+    "name": "Scheibenwischer Set Flat-Blade 60+40cm",
+    "price": 19.90,
+    "description": "Universal, alle gängigen Fahrzeuge, einfache Montage ohne Adapter",
+    "available": true,
+    "category": "Zubehör"
+  },
+  {
+    "name": "Zündkerzen NGK Standard Set (4 Stk)",
+    "price": 12.00,
+    "description": "Universal für 1.4–2.0L Benziner, langer Haltbarkeit, einfacher Einbau",
+    "available": true,
+    "category": "Motor"
+  },
+  {
+    "name": "Kühlflüssigkeit G12+ 5L",
+    "price": 11.90,
+    "description": "Frostschutz bis -40°C, für alle modernen Kühlsysteme, pink",
+    "available": true,
+    "category": "Motorpflege"
+  },
+  {
+    "name": "Stoßdämpfer hinten (Paar) VW Passat B7",
+    "price": 89.90,
+    "description": "TRW-Qualität, für 2010–2015, inkl. Einbauanleitung",
+    "available": true,
+    "category": "Fahrwerk"
+  },
+  {
+    "name": "Keilrippenriemen Audi A4 2.0 TDI",
+    "price": 18.50,
+    "description": "Gates Original, B8/B9, 2008–2018, inkl. Spannrolle",
+    "available": true,
+    "category": "Motor"
+  },
+  {
+    "name": "Batterie 12V 60Ah (Varta Silver)",
+    "price": 79.00,
+    "description": "560A Kaltstartstrom, für Mittelklasse-Fahrzeuge, 2 Jahre Garantie",
+    "available": true,
+    "category": "Elektrik"
+  },
+  {
+    "name": "OBD2 Diagnosegerät",
+    "price": 29.99,
+    "description": "Bluetooth, kompatibel mit iOS & Android, alle Fahrzeuge ab 2001",
+    "available": true,
+    "category": "Werkzeug"
+  }
+]

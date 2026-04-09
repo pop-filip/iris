@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iris Widget — Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+    }
+
+    /* Fake business website */
+    header {
+      background: #fff;
+      padding: 16px 40px;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo { font-size: 20px; font-weight: 800; color: #111; }
+    .logo span { color: #84CC16; }
+    nav a { margin-left: 24px; color: #555; font-size: 14px; text-decoration: none; }
+    nav a:hover { color: #111; }
+
+    .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: #fff;
+      padding: 100px 40px;
+      text-align: center;
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 16px; line-height: 1.1; }
+    .hero h1 span { color: #84CC16; }
+    .hero p { color: rgba(255,255,255,0.6); font-size: 18px; max-width: 500px; margin: 0 auto 32px; }
+    .hero-btn {
+      display: inline-block;
+      background: #84CC16;
+      color: #000;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .products {
+      max-width: 1100px;
+      margin: 64px auto;
+      padding: 0 40px;
+    }
+    .products h2 { font-size: 28px; font-weight: 800; margin-bottom: 32px; color: #111; }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid #eee;
+    }
+    .product-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #111; }
+    .product-card p { font-size: 13px; color: #777; margin-bottom: 12px; line-height: 1.5; }
+    .product-card .price { font-size: 18px; font-weight: 800; color: #84CC16; }
+    .product-card .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .badge.in-stock { background: #dcfce7; color: #166534; }
+    .badge.out { background: #fee2e2; color: #991b1b; }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+      font-size: 13px;
+      border-top: 1px solid #e5e5e5;
+      background: #fff;
+      margin-top: 40px;
+    }
+
+    /* Config panel */
+    .config-bar {
+      background: #111;
+      color: #fff;
+      padding: 12px 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 13px;
+    }
+    .config-bar strong { color: #84CC16; }
+    .config-bar input, .config-bar select {
+      background: #222;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: monospace;
+    }
+    .config-bar input { width: 320px; }
+    .config-bar button {
+      background: #84CC16;
+      color: #000;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .config-bar .status { margin-left: auto; font-size: 12px; }
+    .status.ok { color: #84CC16; }
+    .status.err { color: #f87171; }
+  </style>
+</head>
+<body>
+
+  <!-- Config bar -->
+  <div class="config-bar">
+    <strong>IRIS DEMO</strong>
+    <span>API Server:</span>
+    <input type="text" id="cfg-server" value="http://localhost:3012" />
+    <span>Bot name:</span>
+    <input type="text" id="cfg-name" value="Auto Assistant" style="width:140px" />
+    <span>Color:</span>
+    <input type="color" id="cfg-color" value="#84CC16" style="width:44px;padding:2px" />
+    <button onclick="applyConfig()">Primijeni</button>
+    <span class="status" id="cfg-status">⬤ nije testirano</span>
+  </div>
+
+  <!-- Fake website -->
+  <header>
+    <div class="logo">Auto<span>Teile</span>Pro</div>
+    <nav>
+      <a href="#">Produkte</a>
+      <a href="#">Marken</a>
+      <a href="#">Service</a>
+      <a href="#">Kontakt</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>Günstige Autoteile<br><span>schnell geliefert</span></h1>
+    <p>Über 50.000 Artikel für alle Marken. Versand in 24h. Kostenloser Versand ab €50.</p>
+    <a href="#" class="hero-btn">Jetzt suchen</a>
+  </div>
+
+  <div class="products">
+    <h2>Beliebte Produkte</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <span class="badge in-stock">Verfügbar</span>
+        <h3>Bremsbeläge VW Golf VII</h3>
+        <p>Original-Qualität, passt für 2012–2020. Vorne + hinten Set.</p>
+        <div class="price">€ 34,99</div>
+      </div>
+      <div class="product-card">
+        <span class="badge in-stock">Verfügbar</span>
+        <h3>Ölfilter Universal</h3>
+        <p>Kompatibel mit BMW, Mercedes, Audi. 10er Pack verfügbar.</p>
+        <div class="price">€ 8,50</div>
+      </div>
+      <div class="product-card">
+        <span class="badge in-stock">Verfügbar</span>
+        <h3>Scheibenwischer Set</h3>
+        <p>Flat-Blade, 60+40cm, alle gängigen Fahrzeuge. Einfache Montage.</p>
+        <div class="price">€ 19,90</div>
+      </div>
+      <div class="product-card">
+        <span class="badge out">Ausverkauft</span>
+        <h3>Luftfilter BMW 3er</h3>
+        <p>E90/E91/E92/E93, 2005–2013. Motorschutz der Extraklasse.</p>
+        <div class="price">€ 24,99</div>
+      </div>
+      <div class="product-card">
+        <span class="badge in-stock">Verfügbar</span>
+        <h3>Zündkerzen Set (4 Stk)</h3>
+        <p>NGK Standard, universal für 1.4–2.0L Benziner.</p>
+        <div class="price">€ 12,00</div>
+      </div>
+      <div class="product-card">
+        <span class="badge in-stock">Verfügbar</span>
+        <h3>Kühlflüssigkeit 5L</h3>
+        <p>G12+, -40°C, für alle modernen Kühlsysteme geeignet.</p>
+        <div class="price">€ 11,90</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2026 AutoTeilePro GmbH · Musterstraße 1, 1010 Wien · Powered by <a href="https://digitalnature.at/iris/" style="color:#84CC16">Iris AI</a>
+  </footer>
+
+  <!-- Iris widget -->
+  <script
+    id="iris-script"
+    src="../widget/iris-widget.js"
+    data-server="http://localhost:3012"
+    data-client-id="autoteile-demo"
+    data-name="Auto Assistant"
+    data-color="#84CC16"
+    data-position="right"
+  ></script>
+
+  <script>
+    function applyConfig() {
+      const server = document.getElementById('cfg-server').value.trim();
+      const name   = document.getElementById('cfg-name').value.trim();
+      const color  = document.getElementById('cfg-color').value;
+      const status = document.getElementById('cfg-status');
+
+      // Test connection
+      status.textContent = '⬤ testiram...';
+      status.className = 'status';
+
+      fetch(server + '/health')
+        .then(r => r.json())
+        .then(d => {
+          status.textContent = '⬤ connected — ' + (d.client || 'ok');
+          status.className = 'status ok';
+        })
+        .catch(() => {
+          status.textContent = '⬤ server nije dostupan';
+          status.className = 'status err';
+        });
+
+      // Reload widget with new config
+      const old = document.getElementById('iris-script');
+      if (old) old.remove();
+      // Remove existing widget elements
+      const btn   = document.getElementById('iris-widget-btn');
+      const panel = document.getElementById('iris-widget-panel');
+      if (btn)   btn.remove();
+      if (panel) panel.remove();
+      // Remove injected style
+      document.querySelectorAll('style').forEach(s => {
+        if (s.textContent.includes('iris-widget-btn')) s.remove();
+      });
+
+      const script = document.createElement('script');
+      script.id = 'iris-script';
+      script.src = '../widget/iris-widget.js?t=' + Date.now();
+      script.setAttribute('data-server',    server);
+      script.setAttribute('data-client-id', 'autoteile-demo');
+      script.setAttribute('data-name',      name || 'Iris');
+      script.setAttribute('data-color',     color);
+      script.setAttribute('data-position',  'right');
+      document.body.appendChild(script);
+    }
+
+    // Auto-test on load
+    window.addEventListener('load', () => {
+      const server = document.getElementById('cfg-server').value;
+      const status = document.getElementById('cfg-status');
+      fetch(server + '/health')
+        .then(r => r.json())
+        .then(d => {
+          status.textContent = '⬤ connected — ' + (d.client || 'ok');
+          status.className = 'status ok';
+        })
+        .catch(() => {
+          status.textContent = '⬤ server nije dostupan (pokreni: node chat-server.js)';
+          status.className = 'status err';
+        });
+    });
+  </script>
+
+</body>
+</html>
