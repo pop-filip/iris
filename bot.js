@@ -3,11 +3,14 @@ const { Telegraf, Markup } = require('telegraf');
 const Anthropic = require('@anthropic-ai/sdk');
 const { searchFlights, formatFlights } = require('./flights');
 const { startWhatsApp } = require('./whatsapp');
+const { startChatServer } = require('./chat-server');
+const { setBotInstance } = require('./bot-instance');
 const {
   getHistory, addMessage,
   getUserReminders,
   getPrefs, setPrefs,
   addRecurring, getUserRecurring, deleteRecurring,
+  getLeads, getLeadsCount,
 } = require('./db');
 const { getAuthUrl, exchangeCode, listUpcomingEvents } = require('./calendar');
 const { startReminderCron } = require('./reminders');
@@ -478,9 +481,63 @@ bot.action('flight_email', async (ctx) => {
   }
 });
 
+// --- /leads — Lista leadova za ownera ---
+bot.command('leads', (ctx) => {
+  const ownerId = process.env.OWNER_TELEGRAM_ID;
+  if (ownerId && String(ctx.from.id) !== String(ownerId)) {
+    return ctx.reply('❌ Nur für den Bot-Owner zugänglich.');
+  }
+
+  const clientId = process.env.CLIENT_ID || 'default';
+  const list = getLeads(clientId, 20);
+
+  if (!list.length) return ctx.reply('📭 Noch keine Leads.');
+
+  const lines = list.map((l, i) => {
+    const date = new Date(l.created_at).toLocaleString('de-AT', { timeZone: 'Europe/Vienna' });
+    const parts = [`*${i + 1}.* [${l.source}] ${date}`];
+    if (l.name)  parts.push(`👤 ${l.name}`);
+    if (l.email) parts.push(`📧 ${l.email}`);
+    if (l.phone) parts.push(`📞 ${l.phone}`);
+    parts.push(`💬 ${l.message.substring(0, 100)}`);
+    return parts.join('\n');
+  });
+
+  ctx.reply(`📋 *Letzte 20 Leads*\n\n${lines.join('\n\n')}`, { parse_mode: 'Markdown' });
+});
+
+// --- /report — Sedmični summary ---
+bot.command('report', (ctx) => {
+  const ownerId = process.env.OWNER_TELEGRAM_ID;
+  if (ownerId && String(ctx.from.id) !== String(ownerId)) {
+    return ctx.reply('❌ Nur für den Bot-Owner zugänglich.');
+  }
+
+  const clientId = process.env.CLIENT_ID || 'default';
+  const now = new Date();
+
+  const since7d  = new Date(now - 7  * 86400000).toISOString();
+  const since30d = new Date(now - 30 * 86400000).toISOString();
+
+  const count7d  = getLeadsCount(clientId, since7d);
+  const count30d = getLeadsCount(clientId, since30d);
+  const total    = getLeads(clientId, 9999).length;
+
+  const text =
+    `📊 *Iris Report — ${process.env.CLIENT_NAME || 'Bot'}*\n\n` +
+    `📅 Letzte 7 Tage:  *${count7d}* Leads\n` +
+    `📅 Letzte 30 Tage: *${count30d}* Leads\n` +
+    `📦 Gesamt:         *${total}* Leads\n\n` +
+    `_Stand: ${now.toLocaleString('de-AT', { timeZone: 'Europe/Vienna' })}_`;
+
+  ctx.reply(text, { parse_mode: 'Markdown' });
+});
+
 // --- Start ---
+setBotInstance(bot);
 startReminderCron(bot);
 startWhatsApp();
+startChatServer();
 
 bot.launch()
   .then(() => console.log('✅ Iris bot je pokrenut!'))

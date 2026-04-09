@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Beispielprodukt A",
+    "price": 29.99,
+    "description": "Hochwertiges Produkt für den täglichen Gebrauch",
+    "available": true
+  },
+  {
+    "name": "Beispielprodukt B",
+    "price": 49.99,
+    "description": "Premium-Variante mit erweitertem Funktionsumfang",
+    "available": true
+  },
+  {
+    "name": "Serviceleistung X",
+    "price": 120,
+    "description": "Vor-Ort-Service, inkl. Anfahrt",
+    "available": true
+  },
+  {
+    "name": "Sonderangebot",
+    "price": 19.99,
+    "description": "Nur solange Vorrat reicht",
+    "available": false
+  }
+]
