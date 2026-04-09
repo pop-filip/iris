@@ -1,10 +1,17 @@
 require('dotenv').config();
 const Amadeus = require('amadeus');
 
-const amadeus = new Amadeus({
-  clientId: process.env.AMADEUS_API_KEY,
-  clientSecret: process.env.AMADEUS_API_SECRET,
-});
+// Lazy-init — avoid crash on startup when keys not configured
+let _amadeus = null;
+function getAmadeus() {
+  if (!_amadeus) {
+    _amadeus = new Amadeus({
+      clientId: process.env.AMADEUS_API_KEY,
+      clientSecret: process.env.AMADEUS_API_SECRET,
+    });
+  }
+  return _amadeus;
+}
 
 /**
  * Pretraži letove
@@ -20,7 +27,7 @@ async function searchFlights(origin, destination, departureDate, adults = 1) {
   }
 
   try {
-    const response = await amadeus.shopping.flightOffersSearch.get({
+    const response = await getAmadeus().shopping.flightOffersSearch.get({
       originLocationCode: origin.toUpperCase(),
       destinationLocationCode: destination.toUpperCase(),
       departureDate,
