@@ -14,6 +14,7 @@
   var POSITION    = script.getAttribute('data-position')   || 'right'; // 'right' | 'left'
   var QUICK_RAW   = script.getAttribute('data-quick-replies') || '';
   var QUICK_REPLIES = QUICK_RAW ? QUICK_RAW.split('|').map(function(s){ return s.trim(); }).filter(Boolean) : [];
+  var GREETING    = script.getAttribute('data-greeting') || ('Hallo! Ich bin ' + (script.getAttribute('data-name') || 'Iris') + '. Wie kann ich Ihnen helfen? 👋');
 
   // Generate anonymous session ID
   var userId = localStorage.getItem('iris_uid');
@@ -469,7 +470,7 @@
     }
     // Show greeting if first open
     if (messages.children.length === 0) {
-      addMessage('Hallo! Ich bin ' + BOT_NAME + '. Wie kann ich Ihnen helfen? 👋', 'bot');
+      addMessage(GREETING, 'bot');
       showQuickReplies();
     }
   }
