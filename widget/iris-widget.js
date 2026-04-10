@@ -414,7 +414,10 @@
     isOpen = true;
     panel.classList.add('open');
     setUnread(0);
-    input.focus();
+    // Skip auto-focus on mobile — iOS Safari zooms viewport when input is focused programmatically
+    if (window.innerWidth > 480) {
+      input.focus();
+    }
     // Show greeting if first open
     if (messages.children.length === 0) {
       addMessage('Hallo! Ich bin ' + BOT_NAME + '. Wie kann ich Ihnen helfen? 👋', 'bot');
