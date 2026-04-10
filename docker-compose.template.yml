@@ -1,0 +1,21 @@
+services:
+  iris-widget-{{CLIENT_ID}}:
+    build: .
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./data/{{CLIENT_ID}}/iris.db:/app/iris.db
+      - ./knowledge.md:/app/knowledge.md:ro
+    networks:
+      - traefik-net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.iris-{{CLIENT_ID}}.rule=Host(`{{CLIENT_ID}}.chat.digitalnature.at`)"
+      - "traefik.http.routers.iris-{{CLIENT_ID}}.tls=true"
+      - "traefik.http.routers.iris-{{CLIENT_ID}}.tls.certresolver=letsencrypt"
+      - "traefik.http.services.iris-{{CLIENT_ID}}.loadbalancer.server.port=3002"
+
+networks:
+  traefik-net:
+    external: true

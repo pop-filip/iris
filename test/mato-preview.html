@@ -718,7 +718,8 @@ function applyOverrides() {
   s.id = 'iris-dev-overrides';
   s.setAttribute('data-iris', '1');
   s.textContent = [
-    '#iris-widget-panel { background: ' + state.panelbg + ' !important; border-radius: ' + state.panelradius + 'px !important; width: ' + state.panelwidth + 'px !important; height: ' + state.panelheight + 'px !important; }',
+    '#iris-widget-panel { background: ' + (videoActive ? 'transparent' : state.panelbg) + ' !important; border-radius: ' + state.panelradius + 'px !important; width: ' + state.panelwidth + 'px !important; height: ' + state.panelheight + 'px !important; }',
+    '#iris-widget-messages { background: ' + (videoActive ? 'transparent' : hexToRgba(state.msgareabg, state.msgareaopacity / 100)) + ' !important; }',
     '#iris-widget-btn { width: ' + state.btnsize + 'px !important; height: ' + state.btnsize + 'px !important; background: ' + state.accent + ' !important; }',
     '#iris-widget-header { background: ' + state.accent + ' !important; }',
     '#iris-widget-avatar { background: rgba(0,0,0,0.15) !important; }',
@@ -729,7 +730,7 @@ function applyOverrides() {
     '.iris-msg.user { background: ' + state.accent + ' !important; color: ' + state.usertext + ' !important; border-radius: ' + state.bubbleradius + 'px !important; border-bottom-right-radius: 3px !important; font-size: ' + state.msgfont + 'px !important; line-height: ' + state.lineheight + ' !important; }',
     '.iris-qr-btn:hover { border-color: ' + state.accent + ' !important; color: ' + state.accent + ' !important; }',
     '@keyframes iris-pulse { 0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 0 ' + state.accent + '55; } 50% { box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 10px ' + state.accent + '00; } }',
-    '#iris-widget-messages { background: ' + hexToRgba(state.msgareabg, state.msgareaopacity / 100) + ' !important; }',
+    '.iris-quick-replies { position: relative; z-index: 10; }',
   ].join('\n');
   document.head.appendChild(s);
 }
@@ -852,6 +853,7 @@ function checkServer(server) {
 
 // ── Widget background video ────────────────────────────────────────────────
 var videoBlobUrl = null;
+var videoActive  = false;
 
 function injectVideoIntoWidget() {
   var panel = document.getElementById('iris-widget-panel');
@@ -893,10 +895,8 @@ function onVideoUpload(input) {
   vid.src = videoBlobUrl;
   vid.style.display = 'block';
   overlay.style.display = 'block';
-
-  // Make panel bg transparent so video shows through
-  var panel = document.getElementById('iris-widget-panel');
-  panel.style.background = 'transparent';
+  videoActive = true;
+  applyOverrides();
 
   document.getElementById('video-filename').textContent = '▶ ' + file.name;
   document.getElementById('video-filename').style.display = 'block';
@@ -915,9 +915,9 @@ function removeVideo() {
   var ov = document.getElementById('widget-bg-overlay');
   if (vid) { vid.src = ''; vid.style.display = 'none'; }
   if (ov) ov.style.display = 'none';
-  var panel = document.getElementById('iris-widget-panel');
-  if (panel) panel.style.background = state.panelbg;
+  videoActive = false;
   if (videoBlobUrl) { URL.revokeObjectURL(videoBlobUrl); videoBlobUrl = null; }
+  applyOverrides();
   document.getElementById('video-filename').style.display = 'none';
   document.getElementById('overlay-row').style.display = 'none';
   document.getElementById('btn-remove-video').style.display = 'none';
