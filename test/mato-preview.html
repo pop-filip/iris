@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mato Widget — DEV PREVIEW</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0a;
+      color: #e5e5e5;
+      min-height: 100vh;
+    }
+
+    /* Dev banner */
+    .dev-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #fb923c;
+      color: #000;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px;
+      z-index: 99999;
+      letter-spacing: .5px;
+    }
+
+    /* Mock page */
+    .mock-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      padding-top: 80px;
+      background: linear-gradient(160deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+    }
+
+    .mock-logo {
+      font-family: Georgia, serif;
+      font-size: 72px;
+      color: #c8a45a;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+
+    .mock-title {
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 48px;
+    }
+
+    .mock-nav {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 80px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .mock-nav a {
+      color: #888;
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .mock-tagline {
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 300;
+      color: #e5e5e5;
+      line-height: 1.25;
+      max-width: 640px;
+      margin-bottom: 24px;
+    }
+
+    .mock-tagline em {
+      color: #c8a45a;
+      font-style: normal;
+    }
+
+    .mock-sub {
+      font-size: 15px;
+      color: #555;
+      max-width: 420px;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    .mock-cta {
+      display: inline-block;
+      border: 1px solid #c8a45a;
+      color: #c8a45a;
+      padding: 14px 36px;
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all .2s;
+    }
+
+    .mock-cta:hover {
+      background: #c8a45a;
+      color: #000;
+    }
+
+    /* Dev controls */
+    .dev-controls {
+      position: fixed;
+      top: 34px;
+      left: 16px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 14px 16px;
+      z-index: 9997;
+      min-width: 200px;
+      font-size: 12px;
+    }
+
+    .dev-controls h3 {
+      color: #fb923c;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .dev-controls label {
+      display: block;
+      color: #888;
+      margin-bottom: 4px;
+      font-size: 11px;
+    }
+
+    .dev-controls input, .dev-controls select {
+      width: 100%;
+      background: #111;
+      border: 1px solid #333;
+      color: #e5e5e5;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+
+    .dev-controls button {
+      width: 100%;
+      background: #fb923c;
+      color: #000;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .dev-server-status {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #555;
+      text-align: center;
+    }
+
+    .dev-server-status.ok { color: #4ade80; }
+    .dev-server-status.err { color: #ef4444; }
+  </style>
+</head>
+<body>
+
+<div class="dev-banner">⚙ DEV PREVIEW — iris-widget-dev.js — changes here do NOT affect live matografie.at</div>
+
+<!-- Dev Controls Panel -->
+<div class="dev-controls">
+  <h3>Widget Config</h3>
+
+  <label>Server URL</label>
+  <input id="cfg-server" value="https://matografie.at/iris-api">
+
+  <label>Color</label>
+  <input id="cfg-color" value="#fb923c">
+
+  <label>Position</label>
+  <select id="cfg-position">
+    <option value="right" selected>Right</option>
+    <option value="left">Left</option>
+  </select>
+
+  <button onclick="reloadWidget()">↺ Reload Widget</button>
+
+  <div class="dev-server-status" id="server-status">checking server...</div>
+</div>
+
+<!-- Mock matografie.at page -->
+<div class="mock-hero">
+  <div class="mock-logo">m</div>
+  <div class="mock-title">Mato Davidovic — Videograf</div>
+  <nav class="mock-nav">
+    <a href="#">Wedding</a>
+    <a href="#">Commercial</a>
+    <a href="#">Portfolio</a>
+    <a href="#">Contact</a>
+  </nav>
+  <h1 class="mock-tagline">Every story deserves to be told <em>beautifully.</em></h1>
+  <p class="mock-sub">Cinematic video production — weddings, brand films, creative projects. Based in Oberösterreich, working internationally.</p>
+  <a href="#" class="mock-cta">View Portfolio</a>
+</div>
+
+<script>
+  // ── Widget loader ─────────────────────────────────────────────────────────
+  var widgetScript = null;
+
+  function loadWidget() {
+    var server   = document.getElementById('cfg-server').value;
+    var color    = document.getElementById('cfg-color').value;
+    var position = document.getElementById('cfg-position').value;
+
+    // Remove existing widget elements
+    ['iris-widget-btn','iris-widget-panel'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.remove();
+    });
+    var existingStyle = document.getElementById('iris-widget-style');
+    if (existingStyle) existingStyle.remove();
+    if (widgetScript) widgetScript.remove();
+
+    // Load fresh
+    widgetScript = document.createElement('script');
+    widgetScript.id = 'iris-widget-script';
+    widgetScript.setAttribute('data-server', server);
+    widgetScript.setAttribute('data-client-id', 'matografie');
+    widgetScript.setAttribute('data-name', 'Mato Assistant');
+    widgetScript.setAttribute('data-color', color);
+    widgetScript.setAttribute('data-position', position);
+    widgetScript.setAttribute('data-greeting', 'Hallo, Hello oder Cao-Zdravo i ajde Bok! 👋 Ich bin Matos Assistent — ich spreche Deutsch, English & Ex-Yu Sprachen. Wie kann ich helfen?');
+    widgetScript.setAttribute('data-quick-replies', 'Wedding film 🎬|Hochzeitsfilm 🎬|Prices / Preise 💶|Availability 2026 📅|Do you travel? ✈️|How to book? 📩');
+    widgetScript.src = 'https://digitalnature.at/widget/iris-widget-dev.js?v=' + Date.now();
+    document.body.appendChild(widgetScript);
+
+    checkServer(server);
+  }
+
+  function reloadWidget() {
+    loadWidget();
+  }
+
+  function checkServer(server) {
+    var el = document.getElementById('server-status');
+    el.textContent = 'checking...';
+    el.className = 'dev-server-status';
+    fetch(server + '/health')
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        el.textContent = '✅ server online';
+        el.className = 'dev-server-status ok';
+      })
+      .catch(function() {
+        el.textContent = '❌ server offline';
+        el.className = 'dev-server-status err';
+      });
+  }
+
+  // Initial load
+  loadWidget();
+</script>
+
+</body>
+</html>
