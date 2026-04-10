@@ -468,8 +468,11 @@
     if (window.innerWidth > 480) {
       input.focus();
     }
-    // Show greeting if first open
-    if (messages.children.length === 0) {
+    // Show greeting if first open (ignore injected video/overlay elements)
+    var msgCount = Array.from(messages.children).filter(function(el) {
+      return el.id !== 'widget-bg-video' && el.id !== 'widget-bg-overlay';
+    }).length;
+    if (msgCount === 0) {
       addMessage(GREETING, 'bot');
       showQuickReplies();
     }
