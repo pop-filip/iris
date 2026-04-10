@@ -309,24 +309,35 @@
     .mock-sub { font-size: 14px; color: #555; max-width: 380px; line-height: 1.6; margin-bottom: 40px; }
     .mock-cta { display: inline-block; border: 1px solid #c8a45a; color: #c8a45a; padding: 12px 32px; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; text-decoration: none; }
 
-    /* ── Background video ── */
-    #bg-video {
-      position: fixed;
-      top: 0; left: 280px; right: 0; bottom: 0;
-      width: calc(100% - 280px);
-      height: 100%;
+    /* ── Widget background video ── */
+    #iris-widget-panel {
+      position: relative;
+    }
+    #widget-bg-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       object-fit: cover;
       z-index: 0;
+      border-radius: inherit;
       display: none;
+      pointer-events: none;
     }
-    #bg-overlay {
-      position: fixed;
-      top: 0; left: 280px; right: 0; bottom: 0;
+    #widget-bg-overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: rgba(0,0,0,0.5);
       z-index: 1;
+      border-radius: inherit;
       display: none;
+      pointer-events: none;
     }
-    .mock-page { position: relative; z-index: 2; }
+    /* All widget children above video */
+    #iris-widget-panel > *:not(#widget-bg-video):not(#widget-bg-overlay) {
+      position: relative;
+      z-index: 2;
+    }
 
     /* Video upload drop zone */
     .video-drop {
@@ -357,9 +368,6 @@
 <body>
 
 <div class="dev-banner">⚙ DEV PREVIEW — iris-widget-dev.js — promjene OVDJE ne utječu na live matografie.at</div>
-
-<video id="bg-video" autoplay muted loop playsinline></video>
-<div id="bg-overlay"></div>
 
 <!-- ── Design Panel ── -->
 <div id="design-panel">
@@ -779,50 +787,77 @@ function checkServer(server) {
     .catch(function(){ el.textContent = '❌ server offline'; el.className = 'server-status err'; });
 }
 
-// ── Background video ───────────────────────────────────────────────────────
+// ── Widget background video ────────────────────────────────────────────────
 var videoBlobUrl = null;
+
+function injectVideoIntoWidget() {
+  var panel = document.getElementById('iris-widget-panel');
+  if (!panel) return false;
+  // Inject video + overlay elements into panel if not already there
+  if (!document.getElementById('widget-bg-video')) {
+    var vid = document.createElement('video');
+    vid.id = 'widget-bg-video';
+    vid.autoplay = true;
+    vid.muted = true;
+    vid.loop = true;
+    vid.setAttribute('playsinline', '');
+    var ov = document.createElement('div');
+    ov.id = 'widget-bg-overlay';
+    panel.insertBefore(ov, panel.firstChild);
+    panel.insertBefore(vid, panel.firstChild);
+  }
+  return true;
+}
 
 function onVideoUpload(input) {
   var file = input.files[0];
   if (!file) return;
 
-  // Revoke previous blob
   if (videoBlobUrl) URL.revokeObjectURL(videoBlobUrl);
   videoBlobUrl = URL.createObjectURL(file);
 
-  var vid = document.getElementById('bg-video');
-  var overlay = document.getElementById('bg-overlay');
+  // Inject into widget panel (might need to wait for widget to load)
+  if (!injectVideoIntoWidget()) {
+    // Widget not open yet — open it first, then inject
+    var openBtn = document.getElementById('iris-widget-btn');
+    if (openBtn) openBtn.click();
+    setTimeout(function() { onVideoUpload({ files: [file] }); }, 400);
+    return;
+  }
 
+  var vid = document.getElementById('widget-bg-video');
+  var overlay = document.getElementById('widget-bg-overlay');
   vid.src = videoBlobUrl;
   vid.style.display = 'block';
   overlay.style.display = 'block';
+
+  // Make panel bg transparent so video shows through
+  var panel = document.getElementById('iris-widget-panel');
+  panel.style.background = 'transparent';
 
   document.getElementById('video-filename').textContent = '▶ ' + file.name;
   document.getElementById('video-filename').style.display = 'block';
   document.getElementById('overlay-row').style.display = 'block';
   document.getElementById('btn-remove-video').style.display = 'block';
-
-  // Darken mock page bg so text stays readable
-  document.querySelector('.mock-page').style.background = 'transparent';
-  document.body.style.background = '#000';
 }
 
 function onOverlay(val) {
   document.getElementById('val-overlay').textContent = val + '%';
-  document.getElementById('bg-overlay').style.background = 'rgba(0,0,0,' + (val / 100) + ')';
+  var ov = document.getElementById('widget-bg-overlay');
+  if (ov) ov.style.background = 'rgba(0,0,0,' + (val / 100) + ')';
 }
 
 function removeVideo() {
-  var vid = document.getElementById('bg-video');
-  var overlay = document.getElementById('bg-overlay');
-  vid.src = '';
-  vid.style.display = 'none';
-  overlay.style.display = 'none';
+  var vid = document.getElementById('widget-bg-video');
+  var ov = document.getElementById('widget-bg-overlay');
+  if (vid) { vid.src = ''; vid.style.display = 'none'; }
+  if (ov) ov.style.display = 'none';
+  var panel = document.getElementById('iris-widget-panel');
+  if (panel) panel.style.background = state.panelbg;
   if (videoBlobUrl) { URL.revokeObjectURL(videoBlobUrl); videoBlobUrl = null; }
   document.getElementById('video-filename').style.display = 'none';
   document.getElementById('overlay-row').style.display = 'none';
   document.getElementById('btn-remove-video').style.display = 'none';
-  document.body.style.background = '#0a0a0a';
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
