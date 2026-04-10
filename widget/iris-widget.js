@@ -84,11 +84,16 @@
         bottom: 0 !important;
         left: 0 !important;
         right: 0 !important;
+        top: auto !important;
         width: 100% !important;
         max-width: 100% !important;
-        height: 70vh !important;
-        max-height: 70vh !important;
+        height: 420px !important;
+        max-height: 420px !important;
         border-radius: 20px 20px 0 0 !important;
+        box-shadow: 0 -4px 32px rgba(0,0,0,0.5) !important;
+      }
+      #iris-widget-panel #iris-widget-messages {
+        max-height: 260px !important;
       }
       #iris-widget-btn {
         bottom: 16px !important;
