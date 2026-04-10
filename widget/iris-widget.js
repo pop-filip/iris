@@ -255,10 +255,29 @@
   var isOpen     = false;
   var isTyping   = false;
 
+  function renderMarkdown(text) {
+    // Escape HTML first
+    var escaped = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    return escaped
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/`(.+?)`/g, '<code style="background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:4px;font-family:monospace;font-size:12px">$1</code>')
+      .replace(/^[-•]\s+(.+)$/gm, '<li>$1</li>')
+      .replace(/(<li>.*<\/li>)/s, '<ul style="padding-left:16px;margin:4px 0">$1</ul>')
+      .replace(/\n/g, '<br>');
+  }
+
   function addMessage(text, role) {
     var div = document.createElement('div');
     div.className = 'iris-msg ' + role;
-    div.textContent = text;
+    if (role === 'bot') {
+      div.innerHTML = renderMarkdown(text);
+    } else {
+      div.textContent = text;
+    }
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
     return div;

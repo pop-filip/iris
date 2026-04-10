@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const Anthropic = require('@anthropic-ai/sdk');
 const { getHistory, addMessage } = require('./db');
 const { buildContext } = require('./knowledge');
@@ -16,6 +17,16 @@ app.use((req, res, next) => {
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
+
+// Rate limiting — 20 messages/min per IP
+const chatLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests. Please wait a moment.' },
+});
+app.use('/chat', chatLimiter);
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -134,3 +145,6 @@ function startChatServer() {
 }
 
 module.exports = { startChatServer, app };
+
+// Auto-start when run directly: node chat-server.js
+if (require.main === module) startChatServer();
