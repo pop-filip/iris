@@ -7,11 +7,13 @@
     return scripts[scripts.length - 1];
   })();
 
-  var SERVER    = (script.getAttribute('data-server')    || 'http://localhost:3002').replace(/\/$/, '');
-  var CLIENT_ID = script.getAttribute('data-client-id')  || 'default';
-  var BOT_NAME  = script.getAttribute('data-name')       || 'Iris';
-  var COLOR     = script.getAttribute('data-color')      || '#84CC16';
-  var POSITION  = script.getAttribute('data-position')   || 'right'; // 'right' | 'left'
+  var SERVER      = (script.getAttribute('data-server')    || 'http://localhost:3002').replace(/\/$/, '');
+  var CLIENT_ID   = script.getAttribute('data-client-id')  || 'default';
+  var BOT_NAME    = script.getAttribute('data-name')       || 'Iris';
+  var COLOR       = script.getAttribute('data-color')      || '#84CC16';
+  var POSITION    = script.getAttribute('data-position')   || 'right'; // 'right' | 'left'
+  var QUICK_RAW   = script.getAttribute('data-quick-replies') || '';
+  var QUICK_REPLIES = QUICK_RAW ? QUICK_RAW.split('|').map(function(s){ return s.trim(); }).filter(Boolean) : [];
 
   // Generate anonymous session ID
   var userId = localStorage.getItem('iris_uid');
@@ -76,6 +78,47 @@
       border: 1px solid rgba(255,255,255,0.07);
     }
     #iris-widget-panel.open { display: flex; }
+
+    @media (max-width: 480px) {
+      #iris-widget-panel {
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 70vh !important;
+        max-height: 70vh !important;
+        border-radius: 20px 20px 0 0 !important;
+      }
+      #iris-widget-btn {
+        bottom: 16px !important;
+        ${POSITION}: 16px !important;
+      }
+    }
+
+    .iris-quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0 16px 12px;
+      flex-shrink: 0;
+    }
+    .iris-qr-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .iris-qr-btn:hover {
+      border-color: ${COLOR};
+      color: ${COLOR};
+    }
 
     #iris-widget-header {
       background: ${COLOR};
@@ -337,6 +380,28 @@
     isTyping = false;
   }
 
+  function showQuickReplies() {
+    if (!QUICK_REPLIES.length) return;
+    var existing = document.getElementById('iris-quick-replies');
+    if (existing) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'iris-quick-replies';
+    wrap.id = 'iris-quick-replies';
+    QUICK_REPLIES.forEach(function(label) {
+      var btn = document.createElement('button');
+      btn.className = 'iris-qr-btn';
+      btn.textContent = label;
+      btn.addEventListener('click', function() {
+        wrap.remove();
+        input.value = label;
+        send();
+      });
+      wrap.appendChild(btn);
+    });
+    // Insert before input row
+    panel.insertBefore(wrap, panel.querySelector('#iris-widget-input-row'));
+  }
+
   function open() {
     isOpen = true;
     panel.classList.add('open');
@@ -345,6 +410,7 @@
     // Show greeting if first open
     if (messages.children.length === 0) {
       addMessage('Hallo! Ich bin ' + BOT_NAME + '. Wie kann ich Ihnen helfen? 👋', 'bot');
+      showQuickReplies();
     }
   }
 
