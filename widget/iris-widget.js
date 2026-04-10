@@ -95,6 +95,9 @@
       #iris-widget-panel #iris-widget-messages {
         max-height: 260px !important;
       }
+      #iris-widget-input {
+        font-size: 16px !important;
+      }
       #iris-widget-btn {
         bottom: 16px !important;
         ${POSITION}: 16px !important;
