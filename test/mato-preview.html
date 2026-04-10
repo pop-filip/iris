@@ -13,22 +13,284 @@
       min-height: 100vh;
     }
 
-    /* Dev banner */
+    /* ── Dev banner ── */
     .dev-banner {
       position: fixed;
       top: 0; left: 0; right: 0;
       background: #fb923c;
       color: #000;
       text-align: center;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      padding: 6px;
+      padding: 5px;
       z-index: 99999;
       letter-spacing: .5px;
     }
 
-    /* Mock page */
-    .mock-hero {
+    /* ── Design Panel ── */
+    #design-panel {
+      position: fixed;
+      top: 28px;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      background: #141414;
+      border-right: 1px solid #222;
+      overflow-y: auto;
+      z-index: 9997;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #design-panel::-webkit-scrollbar { width: 4px; }
+    #design-panel::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+    .panel-header {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid #222;
+      flex-shrink: 0;
+    }
+    .panel-header h2 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fb923c;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+    .panel-header p {
+      font-size: 11px;
+      color: #555;
+      margin-top: 3px;
+    }
+
+    .panel-body {
+      padding: 12px;
+      flex: 1;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #555;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+    .control-label {
+      font-size: 12px;
+      color: #888;
+      flex: 1;
+      white-space: nowrap;
+    }
+    .control-value {
+      font-size: 11px;
+      color: #555;
+      min-width: 36px;
+      text-align: right;
+    }
+
+    /* Color swatch + input */
+    .color-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .color-swatch {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      cursor: pointer;
+      flex-shrink: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .color-swatch input[type="color"] {
+      position: absolute;
+      top: -4px; left: -4px;
+      width: 140%;
+      height: 140%;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      opacity: 0;
+    }
+    .color-hex {
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      color: #e5e5e5;
+      font-size: 11px;
+      padding: 5px 7px;
+      border-radius: 6px;
+      width: 76px;
+      font-family: monospace;
+    }
+
+    /* Range slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 3px;
+      background: #2a2a2a;
+      border-radius: 2px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #fb923c;
+      cursor: pointer;
+    }
+    .range-row {
+      margin-bottom: 12px;
+    }
+    .range-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    /* Select */
+    select.ctrl {
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      color: #e5e5e5;
+      font-size: 12px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    /* Text input */
+    input.ctrl-text {
+      background: #1e1e1e;
+      border: 1px solid #2a2a2a;
+      color: #e5e5e5;
+      font-size: 12px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    input.ctrl-text::placeholder { color: #444; }
+    label.ctrl-label-full {
+      display: block;
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      width: 100%;
+      background: #fb923c;
+      color: #000;
+      border: none;
+      padding: 9px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: opacity .15s;
+    }
+    .btn-primary:hover { opacity: .85; }
+    .btn-secondary {
+      width: 100%;
+      background: transparent;
+      color: #888;
+      border: 1px solid #2a2a2a;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: all .15s;
+    }
+    .btn-secondary:hover { border-color: #555; color: #ccc; }
+    .btn-danger {
+      width: 100%;
+      background: transparent;
+      color: #ef4444;
+      border: 1px solid #3a1c1c;
+      padding: 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    /* Export box */
+    #export-box {
+      background: #0d0d0d;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 10px;
+      font-family: monospace;
+      color: #888;
+      word-break: break-all;
+      line-height: 1.6;
+      display: none;
+      margin-top: 8px;
+      white-space: pre-wrap;
+    }
+
+    /* Server status */
+    .server-status {
+      font-size: 11px;
+      color: #555;
+      text-align: center;
+      padding: 6px 0;
+    }
+    .server-status.ok { color: #4ade80; }
+    .server-status.err { color: #ef4444; }
+
+    /* Presets */
+    .presets {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .preset-btn {
+      padding: 7px 6px;
+      border-radius: 7px;
+      border: 1px solid #2a2a2a;
+      background: #1a1a1a;
+      color: #aaa;
+      font-size: 11px;
+      cursor: pointer;
+      text-align: center;
+      transition: all .15s;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: center;
+    }
+    .preset-btn:hover { border-color: #fb923c; color: #fb923c; }
+    .preset-dot {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+    }
+
+    /* ── Mock page ── */
+    .mock-page {
+      margin-left: 280px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -37,170 +299,230 @@
       text-align: center;
       padding: 40px 24px;
       padding-top: 80px;
-      background: linear-gradient(160deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
     }
-
-    .mock-logo {
-      font-family: Georgia, serif;
-      font-size: 72px;
-      color: #c8a45a;
-      margin-bottom: 16px;
-      line-height: 1;
-    }
-
-    .mock-title {
-      font-size: 13px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: #555;
-      margin-bottom: 48px;
-    }
-
-    .mock-nav {
-      display: flex;
-      gap: 32px;
-      margin-bottom: 80px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .mock-nav a {
-      color: #888;
-      text-decoration: none;
-      font-size: 13px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .mock-tagline {
-      font-size: clamp(28px, 5vw, 52px);
-      font-weight: 300;
-      color: #e5e5e5;
-      line-height: 1.25;
-      max-width: 640px;
-      margin-bottom: 24px;
-    }
-
-    .mock-tagline em {
-      color: #c8a45a;
-      font-style: normal;
-    }
-
-    .mock-sub {
-      font-size: 15px;
-      color: #555;
-      max-width: 420px;
-      line-height: 1.6;
-      margin-bottom: 48px;
-    }
-
-    .mock-cta {
-      display: inline-block;
-      border: 1px solid #c8a45a;
-      color: #c8a45a;
-      padding: 14px 36px;
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all .2s;
-    }
-
-    .mock-cta:hover {
-      background: #c8a45a;
-      color: #000;
-    }
-
-    /* Dev controls */
-    .dev-controls {
-      position: fixed;
-      top: 34px;
-      left: 16px;
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 14px 16px;
-      z-index: 9997;
-      min-width: 200px;
-      font-size: 12px;
-    }
-
-    .dev-controls h3 {
-      color: #fb923c;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .dev-controls label {
-      display: block;
-      color: #888;
-      margin-bottom: 4px;
-      font-size: 11px;
-    }
-
-    .dev-controls input, .dev-controls select {
-      width: 100%;
-      background: #111;
-      border: 1px solid #333;
-      color: #e5e5e5;
-      padding: 6px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-
-    .dev-controls button {
-      width: 100%;
-      background: #fb923c;
-      color: #000;
-      border: none;
-      padding: 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .dev-server-status {
-      margin-top: 10px;
-      font-size: 11px;
-      color: #555;
-      text-align: center;
-    }
-
-    .dev-server-status.ok { color: #4ade80; }
-    .dev-server-status.err { color: #ef4444; }
+    .mock-logo { font-family: Georgia, serif; font-size: 72px; color: #c8a45a; margin-bottom: 12px; }
+    .mock-title { font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: #555; margin-bottom: 40px; }
+    .mock-nav { display: flex; gap: 28px; margin-bottom: 60px; flex-wrap: wrap; justify-content: center; }
+    .mock-nav a { color: #666; text-decoration: none; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+    .mock-tagline { font-size: clamp(24px, 4vw, 48px); font-weight: 300; color: #e5e5e5; line-height: 1.25; max-width: 560px; margin-bottom: 20px; }
+    .mock-tagline em { color: #c8a45a; font-style: normal; }
+    .mock-sub { font-size: 14px; color: #555; max-width: 380px; line-height: 1.6; margin-bottom: 40px; }
+    .mock-cta { display: inline-block; border: 1px solid #c8a45a; color: #c8a45a; padding: 12px 32px; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; text-decoration: none; }
   </style>
 </head>
 <body>
 
-<div class="dev-banner">⚙ DEV PREVIEW — iris-widget-dev.js — changes here do NOT affect live matografie.at</div>
+<div class="dev-banner">⚙ DEV PREVIEW — iris-widget-dev.js — promjene OVDJE ne utječu na live matografie.at</div>
 
-<!-- Dev Controls Panel -->
-<div class="dev-controls">
-  <h3>Widget Config</h3>
+<!-- ── Design Panel ── -->
+<div id="design-panel">
+  <div class="panel-header">
+    <h2>Widget Designer</h2>
+    <p>Live preview · iris-widget-dev.js</p>
+  </div>
 
-  <label>Server URL</label>
-  <input id="cfg-server" value="https://matografie.at/iris-api">
+  <div class="panel-body">
 
-  <label>Color</label>
-  <input id="cfg-color" value="#fb923c">
+    <!-- PRESETS -->
+    <div class="section">
+      <div class="section-title">Presets</div>
+      <div class="presets">
+        <button class="preset-btn" onclick="applyPreset('mato')">
+          <div class="preset-dot" style="background:#fb923c"></div>
+          Mato
+        </button>
+        <button class="preset-btn" onclick="applyPreset('iris')">
+          <div class="preset-dot" style="background:#84CC16"></div>
+          Iris Green
+        </button>
+        <button class="preset-btn" onclick="applyPreset('blue')">
+          <div class="preset-dot" style="background:#3b82f6"></div>
+          Blue
+        </button>
+        <button class="preset-btn" onclick="applyPreset('purple')">
+          <div class="preset-dot" style="background:#a855f7"></div>
+          Purple
+        </button>
+        <button class="preset-btn" onclick="applyPreset('light')">
+          <div class="preset-dot" style="background:#ffffff; border:1px solid #444"></div>
+          Light
+        </button>
+        <button class="preset-btn" onclick="applyPreset('gold')">
+          <div class="preset-dot" style="background:#c8a45a"></div>
+          Gold
+        </button>
+      </div>
+    </div>
 
-  <label>Position</label>
-  <select id="cfg-position">
-    <option value="right" selected>Right</option>
-    <option value="left">Left</option>
-  </select>
+    <!-- BOJE -->
+    <div class="section">
+      <div class="section-title">Boje</div>
 
-  <button onclick="reloadWidget()">↺ Reload Widget</button>
+      <div class="control-row">
+        <span class="control-label">Accent boja</span>
+        <div class="color-wrap">
+          <div class="color-swatch" id="swatch-accent">
+            <input type="color" id="color-accent" value="#fb923c" oninput="onColorInput('accent', this.value)">
+          </div>
+          <input class="color-hex" id="hex-accent" value="#fb923c" onchange="onHexInput('accent', this.value)" maxlength="7">
+        </div>
+      </div>
 
-  <div class="dev-server-status" id="server-status">checking server...</div>
+      <div class="control-row">
+        <span class="control-label">Panel background</span>
+        <div class="color-wrap">
+          <div class="color-swatch" id="swatch-panelbg">
+            <input type="color" id="color-panelbg" value="#111111" oninput="onColorInput('panelbg', this.value)">
+          </div>
+          <input class="color-hex" id="hex-panelbg" value="#111111" onchange="onHexInput('panelbg', this.value)" maxlength="7">
+        </div>
+      </div>
+
+      <div class="control-row">
+        <span class="control-label">Bot poruka</span>
+        <div class="color-wrap">
+          <div class="color-swatch" id="swatch-botbubble">
+            <input type="color" id="color-botbubble" value="#1e1e1e" oninput="onColorInput('botbubble', this.value)">
+          </div>
+          <input class="color-hex" id="hex-botbubble" value="#1e1e1e" onchange="onHexInput('botbubble', this.value)" maxlength="7">
+        </div>
+      </div>
+
+      <div class="control-row">
+        <span class="control-label">Bot tekst</span>
+        <div class="color-wrap">
+          <div class="color-swatch" id="swatch-bottext">
+            <input type="color" id="color-bottext" value="#e5e5e5" oninput="onColorInput('bottext', this.value)">
+          </div>
+          <input class="color-hex" id="hex-bottext" value="#e5e5e5" onchange="onHexInput('bottext', this.value)" maxlength="7">
+        </div>
+      </div>
+
+      <div class="control-row">
+        <span class="control-label">User tekst</span>
+        <div class="color-wrap">
+          <div class="color-swatch" id="swatch-usertext">
+            <input type="color" id="color-usertext" value="#000000" oninput="onColorInput('usertext', this.value)">
+          </div>
+          <input class="color-hex" id="hex-usertext" value="#000000" onchange="onHexInput('usertext', this.value)" maxlength="7">
+        </div>
+      </div>
+
+      <div class="control-row">
+        <span class="control-label">Input background</span>
+        <div class="color-wrap">
+          <div class="color-swatch" id="swatch-inputbg">
+            <input type="color" id="color-inputbg" value="#1e1e1e" oninput="onColorInput('inputbg', this.value)">
+          </div>
+          <input class="color-hex" id="hex-inputbg" value="#1e1e1e" onchange="onHexInput('inputbg', this.value)" maxlength="7">
+        </div>
+      </div>
+    </div>
+
+    <!-- OBLIK -->
+    <div class="section">
+      <div class="section-title">Oblik & Veličina</div>
+
+      <div class="range-row">
+        <div class="range-top">
+          <span class="control-label">Panel radius</span>
+          <span class="control-value" id="val-panelradius">16px</span>
+        </div>
+        <input type="range" id="range-panelradius" min="0" max="32" value="16" oninput="onRange('panelradius', this.value, 'px')">
+      </div>
+
+      <div class="range-row">
+        <div class="range-top">
+          <span class="control-label">Bubble radius</span>
+          <span class="control-value" id="val-bubbleradius">12px</span>
+        </div>
+        <input type="range" id="range-bubbleradius" min="0" max="28" value="12" oninput="onRange('bubbleradius', this.value, 'px')">
+      </div>
+
+      <div class="range-row">
+        <div class="range-top">
+          <span class="control-label">Panel širina</span>
+          <span class="control-value" id="val-panelwidth">360px</span>
+        </div>
+        <input type="range" id="range-panelwidth" min="280" max="480" value="360" oninput="onRange('panelwidth', this.value, 'px')">
+      </div>
+
+      <div class="range-row">
+        <div class="range-top">
+          <span class="control-label">Panel visina</span>
+          <span class="control-value" id="val-panelheight">520px</span>
+        </div>
+        <input type="range" id="range-panelheight" min="400" max="700" value="520" oninput="onRange('panelheight', this.value, 'px')">
+      </div>
+
+      <div class="range-row">
+        <div class="range-top">
+          <span class="control-label">Dugme veličina</span>
+          <span class="control-value" id="val-btnsize">56px</span>
+        </div>
+        <input type="range" id="range-btnsize" min="44" max="72" value="56" oninput="onRange('btnsize', this.value, 'px')">
+      </div>
+    </div>
+
+    <!-- TIPOGRAFIJA -->
+    <div class="section">
+      <div class="section-title">Tipografija</div>
+
+      <div class="range-row">
+        <div class="range-top">
+          <span class="control-label">Poruke font</span>
+          <span class="control-value" id="val-msgfont">14px</span>
+        </div>
+        <input type="range" id="range-msgfont" min="12" max="18" value="14" oninput="onRange('msgfont', this.value, 'px')">
+      </div>
+
+      <div class="range-row">
+        <div class="range-top">
+          <span class="control-label">Line height</span>
+          <span class="control-value" id="val-lineheight">1.55</span>
+        </div>
+        <input type="range" id="range-lineheight" min="1.2" max="2.0" step="0.05" value="1.55" oninput="onRange('lineheight', this.value, '')">
+      </div>
+    </div>
+
+    <!-- KONFIGURACIJA -->
+    <div class="section">
+      <div class="section-title">Konfiguracija</div>
+
+      <label class="ctrl-label-full">Server URL</label>
+      <input class="ctrl-text" id="cfg-server" value="https://matografie.at/iris-api">
+
+      <label class="ctrl-label-full">Bot ime</label>
+      <input class="ctrl-text" id="cfg-name" value="Mato Assistant">
+
+      <label class="ctrl-label-full">Pozicija</label>
+      <select class="ctrl" id="cfg-position">
+        <option value="right" selected>Desno</option>
+        <option value="left">Lijevo</option>
+      </select>
+
+      <label class="ctrl-label-full">Greeting poruka</label>
+      <input class="ctrl-text" id="cfg-greeting" value="Hallo, Hello oder Cao-Zdravo i ajde Bok! 👋 Ich bin Matos Assistent — ich spreche Deutsch, English & Ex-Yu Sprachen. Wie kann ich helfen?">
+
+      <label class="ctrl-label-full">Quick replies (odvojeni |)</label>
+      <input class="ctrl-text" id="cfg-qr" value="Wedding film 🎬|Hochzeitsfilm 🎬|Prices / Preise 💶|Availability 2026 📅|Do you travel? ✈️|How to book? 📩">
+    </div>
+
+    <!-- AKCIJE -->
+    <div class="section">
+      <div class="section-title">Akcije</div>
+      <button class="btn-primary" onclick="reloadWidget()">↺ Reload Widget</button>
+      <button class="btn-secondary" onclick="toggleExport()">{'<>'} Export script tag</button>
+      <button class="btn-danger" onclick="copyToLive()">⚡ Kopiraj na LIVE widget</button>
+      <div id="export-box"></div>
+      <div class="server-status" id="server-status">checking server...</div>
+    </div>
+
+  </div>
 </div>
 
-<!-- Mock matografie.at page -->
-<div class="mock-hero">
+<!-- ── Mock matografie.at ── -->
+<div class="mock-page">
   <div class="mock-logo">m</div>
   <div class="mock-title">Mato Davidovic — Videograf</div>
   <nav class="mock-nav">
@@ -215,61 +537,182 @@
 </div>
 
 <script>
-  // ── Widget loader ─────────────────────────────────────────────────────────
-  var widgetScript = null;
+// ── State ──────────────────────────────────────────────────────────────────
+var state = {
+  accent:      '#fb923c',
+  panelbg:     '#111111',
+  botbubble:   '#1e1e1e',
+  bottext:     '#e5e5e5',
+  usertext:    '#000000',
+  inputbg:     '#1e1e1e',
+  panelradius: 16,
+  bubbleradius:12,
+  panelwidth:  360,
+  panelheight: 520,
+  btnsize:     56,
+  msgfont:     14,
+  lineheight:  1.55,
+};
 
-  function loadWidget() {
-    var server   = document.getElementById('cfg-server').value;
-    var color    = document.getElementById('cfg-color').value;
-    var position = document.getElementById('cfg-position').value;
+var presets = {
+  mato:   { accent:'#fb923c', panelbg:'#111111', botbubble:'#1e1e1e', bottext:'#e5e5e5', usertext:'#000000', inputbg:'#1e1e1e', panelradius:16, bubbleradius:12 },
+  iris:   { accent:'#84CC16', panelbg:'#111111', botbubble:'#1e1e1e', bottext:'#e5e5e5', usertext:'#000000', inputbg:'#1e1e1e', panelradius:16, bubbleradius:12 },
+  blue:   { accent:'#3b82f6', panelbg:'#0f172a', botbubble:'#1e293b', bottext:'#e2e8f0', usertext:'#ffffff', inputbg:'#1e293b', panelradius:16, bubbleradius:12 },
+  purple: { accent:'#a855f7', panelbg:'#0f0a1e', botbubble:'#1a1030', bottext:'#e9d5ff', usertext:'#ffffff', inputbg:'#1a1030', panelradius:20, bubbleradius:16 },
+  light:  { accent:'#2563eb', panelbg:'#ffffff', botbubble:'#f1f5f9', bottext:'#1e293b', usertext:'#ffffff', inputbg:'#f8fafc', panelradius:16, bubbleradius:12 },
+  gold:   { accent:'#c8a45a', panelbg:'#0a0a0a', botbubble:'#1a1a1a', bottext:'#e5e5e5', usertext:'#000000', inputbg:'#1a1a1a', panelradius:12, bubbleradius:8  },
+};
 
-    // Remove existing widget elements
-    ['iris-widget-btn','iris-widget-panel'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) el.remove();
-    });
-    var existingStyle = document.getElementById('iris-widget-style');
-    if (existingStyle) existingStyle.remove();
-    if (widgetScript) widgetScript.remove();
+// ── Widget loader ──────────────────────────────────────────────────────────
+var widgetScript = null;
 
-    // Load fresh
-    widgetScript = document.createElement('script');
-    widgetScript.id = 'iris-widget-script';
-    widgetScript.setAttribute('data-server', server);
-    widgetScript.setAttribute('data-client-id', 'matografie');
-    widgetScript.setAttribute('data-name', 'Mato Assistant');
-    widgetScript.setAttribute('data-color', color);
-    widgetScript.setAttribute('data-position', position);
-    widgetScript.setAttribute('data-greeting', 'Hallo, Hello oder Cao-Zdravo i ajde Bok! 👋 Ich bin Matos Assistent — ich spreche Deutsch, English & Ex-Yu Sprachen. Wie kann ich helfen?');
-    widgetScript.setAttribute('data-quick-replies', 'Wedding film 🎬|Hochzeitsfilm 🎬|Prices / Preise 💶|Availability 2026 📅|Do you travel? ✈️|How to book? 📩');
-    widgetScript.src = 'https://digitalnature.at/widget/iris-widget-dev.js?v=' + Date.now();
-    document.body.appendChild(widgetScript);
+function reloadWidget() {
+  // Remove existing
+  ['iris-widget-btn','iris-widget-panel'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.remove();
+  });
+  document.querySelectorAll('style[data-iris]').forEach(function(s){ s.remove(); });
+  if (widgetScript) widgetScript.remove();
 
-    checkServer(server);
-  }
+  var server   = document.getElementById('cfg-server').value;
+  var name     = document.getElementById('cfg-name').value;
+  var position = document.getElementById('cfg-position').value;
+  var greeting = document.getElementById('cfg-greeting').value;
+  var qr       = document.getElementById('cfg-qr').value;
 
-  function reloadWidget() {
-    loadWidget();
-  }
+  widgetScript = document.createElement('script');
+  widgetScript.setAttribute('data-server',       server);
+  widgetScript.setAttribute('data-client-id',    'matografie');
+  widgetScript.setAttribute('data-name',         name);
+  widgetScript.setAttribute('data-color',        state.accent);
+  widgetScript.setAttribute('data-position',     position);
+  widgetScript.setAttribute('data-greeting',     greeting);
+  widgetScript.setAttribute('data-quick-replies', qr);
+  widgetScript.src = 'https://digitalnature.at/widget/iris-widget-dev.js?v=' + Date.now();
+  widgetScript.onload = function() { applyOverrides(); };
+  document.body.appendChild(widgetScript);
 
-  function checkServer(server) {
-    var el = document.getElementById('server-status');
-    el.textContent = 'checking...';
-    el.className = 'dev-server-status';
-    fetch(server + '/health')
-      .then(function(r) { return r.json(); })
-      .then(function(d) {
-        el.textContent = '✅ server online';
-        el.className = 'dev-server-status ok';
-      })
-      .catch(function() {
-        el.textContent = '❌ server offline';
-        el.className = 'dev-server-status err';
-      });
-  }
+  checkServer(server);
+}
 
-  // Initial load
-  loadWidget();
+// ── CSS overrides (live, no reload) ───────────────────────────────────────
+function applyOverrides() {
+  var existing = document.getElementById('iris-dev-overrides');
+  if (existing) existing.remove();
+
+  var s = document.createElement('style');
+  s.id = 'iris-dev-overrides';
+  s.setAttribute('data-iris', '1');
+  s.textContent = [
+    '#iris-widget-panel { background: ' + state.panelbg + ' !important; border-radius: ' + state.panelradius + 'px !important; width: ' + state.panelwidth + 'px !important; height: ' + state.panelheight + 'px !important; }',
+    '#iris-widget-btn { width: ' + state.btnsize + 'px !important; height: ' + state.btnsize + 'px !important; background: ' + state.accent + ' !important; }',
+    '#iris-widget-header { background: ' + state.accent + ' !important; }',
+    '#iris-widget-avatar { background: rgba(0,0,0,0.15) !important; }',
+    '#iris-widget-send { background: ' + state.accent + ' !important; }',
+    '#iris-widget-input { background: ' + state.inputbg + ' !important; border-color: rgba(255,255,255,0.1) !important; }',
+    '#iris-widget-input:focus { border-color: ' + state.accent + ' !important; }',
+    '.iris-msg.bot { background: ' + state.botbubble + ' !important; color: ' + state.bottext + ' !important; border-radius: ' + state.bubbleradius + 'px !important; border-bottom-left-radius: 3px !important; font-size: ' + state.msgfont + 'px !important; line-height: ' + state.lineheight + ' !important; }',
+    '.iris-msg.user { background: ' + state.accent + ' !important; color: ' + state.usertext + ' !important; border-radius: ' + state.bubbleradius + 'px !important; border-bottom-right-radius: 3px !important; font-size: ' + state.msgfont + 'px !important; line-height: ' + state.lineheight + ' !important; }',
+    '.iris-qr-btn:hover { border-color: ' + state.accent + ' !important; color: ' + state.accent + ' !important; }',
+    '@keyframes iris-pulse { 0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 0 ' + state.accent + '55; } 50% { box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 10px ' + state.accent + '00; } }',
+  ].join('\n');
+  document.head.appendChild(s);
+}
+
+// ── Color controls ─────────────────────────────────────────────────────────
+function onColorInput(key, val) {
+  state[key] = val;
+  document.getElementById('hex-' + key).value = val;
+  document.getElementById('swatch-' + key).style.background = val;
+  applyOverrides();
+}
+
+function onHexInput(key, val) {
+  if (!/^#[0-9a-fA-F]{6}$/.test(val)) return;
+  state[key] = val;
+  document.getElementById('color-' + key).value = val;
+  document.getElementById('swatch-' + key).style.background = val;
+  applyOverrides();
+}
+
+// ── Range controls ─────────────────────────────────────────────────────────
+function onRange(key, val, unit) {
+  state[key] = parseFloat(val);
+  document.getElementById('val-' + key).textContent = val + unit;
+  applyOverrides();
+}
+
+// ── Presets ────────────────────────────────────────────────────────────────
+function applyPreset(name) {
+  var p = presets[name];
+  if (!p) return;
+  Object.keys(p).forEach(function(k) {
+    state[k] = p[k];
+    // sync color pickers
+    if (document.getElementById('color-' + k)) {
+      document.getElementById('color-' + k).value = p[k];
+      document.getElementById('hex-' + k).value = p[k];
+      document.getElementById('swatch-' + k).style.background = p[k];
+    }
+    // sync ranges
+    if (document.getElementById('range-' + k)) {
+      document.getElementById('range-' + k).value = p[k];
+      var unit = (k === 'lineheight') ? '' : 'px';
+      document.getElementById('val-' + k).textContent = p[k] + unit;
+    }
+  });
+  reloadWidget();
+}
+
+// ── Swatches init ──────────────────────────────────────────────────────────
+function initSwatches() {
+  ['accent','panelbg','botbubble','bottext','usertext','inputbg'].forEach(function(k) {
+    document.getElementById('swatch-' + k).style.background = state[k];
+  });
+}
+
+// ── Export ─────────────────────────────────────────────────────────────────
+function toggleExport() {
+  var box = document.getElementById('export-box');
+  if (box.style.display === 'block') { box.style.display = 'none'; return; }
+
+  var name     = document.getElementById('cfg-name').value;
+  var server   = document.getElementById('cfg-server').value;
+  var position = document.getElementById('cfg-position').value;
+  var greeting = document.getElementById('cfg-greeting').value;
+  var qr       = document.getElementById('cfg-qr').value;
+
+  box.textContent = '<script\n  src="https://digitalnature.at/widget/iris-widget.js"\n  data-server="' + server + '"\n  data-client-id="matografie"\n  data-name="' + name + '"\n  data-color="' + state.accent + '"\n  data-position="' + position + '"\n  data-greeting="' + greeting + '"\n  data-quick-replies="' + qr + '"\n><\/script>';
+  box.style.display = 'block';
+
+  // Copy to clipboard
+  navigator.clipboard.writeText(box.textContent).then(function() {
+    box.style.borderColor = '#4ade80';
+    setTimeout(function(){ box.style.borderColor = ''; }, 1500);
+  });
+}
+
+// ── Copy to live ───────────────────────────────────────────────────────────
+function copyToLive() {
+  if (!confirm('Kopirati iris-widget-dev.js na iris-widget.js?\n\nOvo će promijeniti LIVE widget na svim sajtovima!')) return;
+  alert('Otvori terminal i pokreni:\n\ncp ~/iris/widget/iris-widget-dev.js ~/iris/widget/iris-widget.js\ncd ~/iris && git add widget/ && git commit -m "Widget design update" && git push');
+}
+
+// ── Server check ───────────────────────────────────────────────────────────
+function checkServer(server) {
+  var el = document.getElementById('server-status');
+  el.textContent = 'checking...';
+  el.className = 'server-status';
+  fetch(server + '/health')
+    .then(function(r){ return r.json(); })
+    .then(function(){ el.textContent = '✅ server online'; el.className = 'server-status ok'; })
+    .catch(function(){ el.textContent = '❌ server offline'; el.className = 'server-status err'; });
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+initSwatches();
+reloadWidget();
 </script>
 
 </body>
