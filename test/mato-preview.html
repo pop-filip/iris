@@ -479,6 +479,14 @@
         </div>
       </div>
 
+      <div class="range-row">
+        <div class="range-top">
+          <span class="control-label">Input vidljivost</span>
+          <span class="control-value" id="val-inputbgopacity">100%</span>
+        </div>
+        <input type="range" id="range-inputbgopacity" min="0" max="100" value="100" oninput="onInputBgOpacity(this.value)">
+      </div>
+
       <div class="control-row">
         <span class="control-label">Tekst zona boja</span>
         <div class="color-wrap">
@@ -649,6 +657,7 @@ var state = {
   msgareabg:        '#111111',
   msgareaopacity:   100,
   botbubbleopacity: 100,
+  inputbgopacity:   100,
   panelradius:    16,
   bubbleradius:   12,
   panelwidth:     360,
@@ -714,7 +723,7 @@ function applyOverrides() {
     '#iris-widget-header { background: ' + state.accent + ' !important; }',
     '#iris-widget-avatar { background: rgba(0,0,0,0.15) !important; }',
     '#iris-widget-send { background: ' + state.accent + ' !important; }',
-    '#iris-widget-input { background: ' + state.inputbg + ' !important; border-color: rgba(255,255,255,0.1) !important; }',
+    '#iris-widget-input { background: ' + hexToRgba(state.inputbg, state.inputbgopacity / 100) + ' !important; border-color: rgba(255,255,255,0.1) !important; }',
     '#iris-widget-input:focus { border-color: ' + state.accent + ' !important; }',
     '.iris-msg.bot { background: ' + hexToRgba(state.botbubble, state.botbubbleopacity / 100) + ' !important; color: ' + state.bottext + ' !important; border-radius: ' + state.bubbleradius + 'px !important; border-bottom-left-radius: 3px !important; font-size: ' + state.msgfont + 'px !important; line-height: ' + state.lineheight + ' !important; }',
     '.iris-msg.user { background: ' + state.accent + ' !important; color: ' + state.usertext + ' !important; border-radius: ' + state.bubbleradius + 'px !important; border-bottom-right-radius: 3px !important; font-size: ' + state.msgfont + 'px !important; line-height: ' + state.lineheight + ' !important; }',
@@ -747,6 +756,12 @@ function hexToRgba(hex, alpha) {
   var g = parseInt(hex.slice(3,5), 16);
   var b = parseInt(hex.slice(5,7), 16);
   return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+}
+
+function onInputBgOpacity(val) {
+  state.inputbgopacity = parseInt(val);
+  document.getElementById('val-inputbgopacity').textContent = val + '%';
+  applyOverrides();
 }
 
 function onBotBubbleOpacity(val) {
