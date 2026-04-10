@@ -40,9 +40,16 @@
       justify-content: center;
       z-index: 9998;
       transition: transform .2s ease, box-shadow .2s ease;
+      animation: iris-pulse 2.8s ease-in-out infinite;
     }
-    #iris-widget-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,0,0,0.35); }
+    #iris-widget-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,0,0,0.35); animation: none; }
+    #iris-widget-btn.open { animation: none; }
     #iris-widget-btn svg { width: 26px; height: 26px; fill: #000; }
+
+    @keyframes iris-pulse {
+      0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 0 ${COLOR}55; }
+      50% { box-shadow: 0 4px 20px rgba(0,0,0,0.25), 0 0 0 10px ${COLOR}00; }
+    }
 
     #iris-widget-badge {
       position: absolute;
@@ -70,14 +77,22 @@
       background: #111;
       border-radius: 16px;
       box-shadow: 0 8px 48px rgba(0,0,0,0.45);
-      display: none;
+      display: flex;
       flex-direction: column;
       overflow: hidden;
       z-index: 9999;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       border: 1px solid rgba(255,255,255,0.07);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(16px) scale(0.97);
+      transition: opacity .22s ease, transform .22s ease;
     }
-    #iris-widget-panel.open { display: flex; }
+    #iris-widget-panel.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0) scale(1);
+    }
 
     @media (max-width: 480px) {
       #iris-widget-panel {
@@ -130,23 +145,51 @@
 
     #iris-widget-header {
       background: ${COLOR};
-      padding: 14px 16px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 10px;
       flex-shrink: 0;
     }
-    #iris-widget-header-dot {
-      width: 8px; height: 8px;
-      background: #000;
+    #iris-widget-avatar {
+      width: 36px; height: 36px;
       border-radius: 50%;
-      opacity: .5;
+      background: rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #000;
+      flex-shrink: 0;
+      letter-spacing: 0;
+    }
+    #iris-widget-header-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
     #iris-widget-header-name {
       font-weight: 700;
-      font-size: 15px;
+      font-size: 14px;
       color: #000;
-      flex: 1;
+      line-height: 1;
+    }
+    #iris-widget-header-status {
+      font-size: 11px;
+      color: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      line-height: 1;
+    }
+    #iris-widget-header-status::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: #16a34a;
+      border-radius: 50%;
     }
     #iris-widget-close {
       background: none;
@@ -279,10 +322,15 @@
 
   var panel = document.createElement('div');
   panel.id = 'iris-widget-panel';
+  var avatarInitials = BOT_NAME.split(' ').map(function(w){ return w[0]; }).join('').substring(0, 2).toUpperCase();
+
   panel.innerHTML = `
     <div id="iris-widget-header">
-      <div id="iris-widget-header-dot"></div>
-      <div id="iris-widget-header-name">${BOT_NAME}</div>
+      <div id="iris-widget-avatar">${avatarInitials}</div>
+      <div id="iris-widget-header-info">
+        <div id="iris-widget-header-name">${BOT_NAME}</div>
+        <div id="iris-widget-header-status">Online</div>
+      </div>
       <button id="iris-widget-close" aria-label="Schließen">×</button>
     </div>
     <div id="iris-widget-messages"></div>
@@ -413,6 +461,7 @@
   function open() {
     isOpen = true;
     panel.classList.add('open');
+    btn.classList.add('open');
     setUnread(0);
     // Skip auto-focus on mobile — iOS Safari zooms viewport when input is focused programmatically
     if (window.innerWidth > 480) {
@@ -428,6 +477,7 @@
   function close() {
     isOpen = false;
     panel.classList.remove('open');
+    btn.classList.remove('open');
   }
 
   btn.addEventListener('click', function () { isOpen ? close() : open(); });
