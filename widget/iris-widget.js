@@ -278,7 +278,7 @@
       overflow-y: auto;
     }
     #iris-widget-input:focus { border-color: ${COLOR}; }
-    #iris-widget-input::placeholder { color: #555; }
+    #iris-widget-input::placeholder { color: #888; }
     #iris-widget-send {
       width: 42px; height: 42px;
       background: ${COLOR};
